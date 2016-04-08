@@ -99,7 +99,6 @@ class ApplePush
         }
         $apkDB->close();
         return $out;
-        //return array('74b36c00589d55376434476381bd6ddda39aba8d44b3d836f3ef6e76a13cd541');
     }
 
     private function getAllIds()

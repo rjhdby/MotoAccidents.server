@@ -159,20 +159,4 @@ class Auth
     {
         return $this->role == Cast::READ_ONLY_ROLE;
     }
-
-    private function castStatus($status)
-    {
-        switch ($status) {
-            case "readonly":
-                return self::READ_ONLY_ROLE;
-            case "standart":
-                return self::STANDARD_ROLE;
-            case "moderator":
-                return self::MODERATOR_ROLE;
-            case "developer":
-                return self::DEVELOPER_ROLE;
-            default:
-                return self::STANDARD_ROLE;
-        }
-    }
 }

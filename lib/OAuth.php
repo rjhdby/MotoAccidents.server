@@ -1,4 +1,5 @@
 <?php
+/** @noinspection */
 // vim: foldmethod=marker
 
 /* Generic exception class
@@ -33,7 +34,8 @@ class OAuthToken {
    * key = the token
    * secret = the token secret
    */
-  function __construct($key, $secret) {
+  function __construct(
+      $key, $secret) {
     $this->key = $key;
     $this->secret = $secret;
   }

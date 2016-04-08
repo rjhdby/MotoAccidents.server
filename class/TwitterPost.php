@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpIncludeInspection */
 require_once 'lib/twitteroauth.php';
 
 class TwitterPost
