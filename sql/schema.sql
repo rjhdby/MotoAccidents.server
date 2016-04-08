@@ -1,32 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 
--- http://www.phpmyadmin.net
---
--- Хост: motodonor.mysql
--- Время создания: Апр 08 2016 г., 10:47
--- Версия сервера: 5.6.25-73.1
--- Версия PHP: 5.6.6
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- База данных: `motodonor_mobile`
---
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `acc_statuses`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `acc_statuses`;
 CREATE TABLE IF NOT EXISTS `acc_statuses` (
@@ -37,12 +16,6 @@ CREATE TABLE IF NOT EXISTS `acc_statuses` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `acc_types`
---
--- Создание: Мар 31 2016 г., 10:31
---
-
 DROP TABLE IF EXISTS `acc_types`;
 CREATE TABLE IF NOT EXISTS `acc_types` (
   `id` int(11) NOT NULL,
@@ -51,12 +24,6 @@ CREATE TABLE IF NOT EXISTS `acc_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `attributes`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `attributes`;
 CREATE TABLE IF NOT EXISTS `attributes` (
@@ -67,13 +34,6 @@ CREATE TABLE IF NOT EXISTS `attributes` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `config`
---
--- Создание: Дек 23 2015 г., 21:59
--- Последнее обновление: Дек 23 2015 г., 21:59
---
-
 DROP TABLE IF EXISTS `config`;
 CREATE TABLE IF NOT EXISTS `config` (
   `key` varchar(20) NOT NULL,
@@ -82,12 +42,6 @@ CREATE TABLE IF NOT EXISTS `config` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `devices`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `devices`;
 CREATE TABLE IF NOT EXISTS `devices` (
@@ -99,12 +53,6 @@ CREATE TABLE IF NOT EXISTS `devices` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `devices_ios`
---
--- Создание: Апр 01 2016 г., 08:53
---
-
 DROP TABLE IF EXISTS `devices_ios`;
 CREATE TABLE IF NOT EXISTS `devices_ios` (
   `id_user` int(11) NOT NULL,
@@ -113,12 +61,6 @@ CREATE TABLE IF NOT EXISTS `devices_ios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `entities`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `entities`;
 CREATE TABLE IF NOT EXISTS `entities` (
@@ -145,13 +87,6 @@ CREATE TABLE IF NOT EXISTS `entities` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `extreq`
---
--- Создание: Дек 23 2015 г., 21:59
--- Последнее обновление: Дек 23 2015 г., 21:59
---
-
 DROP TABLE IF EXISTS `extreq`;
 CREATE TABLE IF NOT EXISTS `extreq` (
   `id` mediumint(8) unsigned NOT NULL,
@@ -162,12 +97,6 @@ CREATE TABLE IF NOT EXISTS `extreq` (
 ) ENGINE=MyISAM AUTO_INCREMENT=10470 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `history`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `history`;
 CREATE TABLE IF NOT EXISTS `history` (
@@ -181,12 +110,6 @@ CREATE TABLE IF NOT EXISTS `history` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `med_types`
---
--- Создание: Мар 31 2016 г., 10:31
---
-
 DROP TABLE IF EXISTS `med_types`;
 CREATE TABLE IF NOT EXISTS `med_types` (
   `id` int(11) NOT NULL,
@@ -195,12 +118,6 @@ CREATE TABLE IF NOT EXISTS `med_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `messages`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -215,12 +132,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `onway`
---
--- Создание: Мар 31 2016 г., 10:31
---
-
 DROP TABLE IF EXISTS `onway`;
 CREATE TABLE IF NOT EXISTS `onway` (
   `id` int(10) unsigned NOT NULL,
@@ -230,13 +141,6 @@ CREATE TABLE IF NOT EXISTS `onway` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `regions`
---
--- Создание: Дек 23 2015 г., 22:00
--- Последнее обновление: Дек 23 2015 г., 22:00
---
 
 DROP TABLE IF EXISTS `regions`;
 CREATE TABLE IF NOT EXISTS `regions` (
@@ -249,24 +153,12 @@ CREATE TABLE IF NOT EXISTS `regions` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `roles`
---
--- Создание: Мар 31 2016 г., 10:31
---
-
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `role` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `static`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `static`;
 CREATE TABLE IF NOT EXISTS `static` (
@@ -277,12 +169,6 @@ CREATE TABLE IF NOT EXISTS `static` (
 
 -- --------------------------------------------------------
 
---
--- Структура таблицы `types`
---
--- Создание: Мар 31 2016 г., 10:31
---
-
 DROP TABLE IF EXISTS `types`;
 CREATE TABLE IF NOT EXISTS `types` (
   `type` varchar(255) NOT NULL,
@@ -290,12 +176,6 @@ CREATE TABLE IF NOT EXISTS `types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
-
---
--- Структура таблицы `users`
---
--- Создание: Мар 31 2016 г., 10:31
---
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
