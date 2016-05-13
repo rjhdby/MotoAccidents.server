@@ -8,6 +8,7 @@ function __autoload($class_name)
     /** @noinspection PhpIncludeInspection */
     require_once 'class/' . $class_name . '.php';
 }
+const TEST = 1;
 
 $_GET['test'] = 1;
 switch ($_GET['m']) {
@@ -43,6 +44,9 @@ switch ($_GET['m']) {
         break;
     case 'getAccident':
         $method = new GetAccident($_GET);
+        break;
+    case 'appleXPush':
+        $method = new ApplePush($_GET);
         break;
     default:
         $method = new WrongMethod();

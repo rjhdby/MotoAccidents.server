@@ -7,37 +7,23 @@ class ApplePush
     private $push;
 
     /**
-     * AndroidPush constructor.
+     * ApplePush constructor.
      * @param array $data
      */
     public function __construct($data)
     {
-        $this->test = isset($data['test']) ? 1 : 0;
+        $this->test = TEST;
         $this->push = new Push($data);
-        $this->sendBroadcast();
+        $this->send($this->getIds());
     }
 
-    private function sendBroadcast()
-    {
-        $result = "";
-        $ids = $this->getIds();
-        /*
-        for ($i = 0; $i < count($ids); $i += 20) {
-            $result .= $this->send(array_slice($ids, $i, 20));
-        }
-        */
-        foreach ($ids as $id) {
-            $result = $this->send($id);
-        }
-    }
-
-    private function send($id)
+    private function send($ids)
     {
         $ctx = stream_context_create();
-        stream_context_set_option($ctx, 'ssl', 'local_cert', Config::get('apns.cert.test'));
+        stream_context_set_option($ctx, 'ssl', 'local_cert', Config::get('apns.cert.prod'));
         stream_context_set_option($ctx, 'ssl', 'passphrase', Config::get('apns.passphrase'));
 
-        $fp = stream_socket_client(Config::get('apns.url.test'),
+        $fp = stream_socket_client(Config::get('apns.url.prod'),
             $err,
             $errStr,
             60,
@@ -45,31 +31,20 @@ class ApplePush
             $ctx);
         stream_set_blocking($fp, 0);
         if (!$fp) exit("Failed to connect: $err $errStr" . PHP_EOL);
-//        $appleExpiry = time() + (2 * 60 * 60); // держать живым 2 часа
-
-        $body['aps'] = array(
-            'alert' => $this->push->getDataForApple(),
-            'sound' => 'default',
-            'content-available' => 1
-        );
-
-        $payload = json_encode($body);
-
-        $msg = chr(0);
-        $msg .= pack('n', 32);
-        $msg .= pack('H*', $id);
-        $msg .= pack('n', strlen($payload));
-        $msg .= $payload;
-
-        var_dump($msg);
-
-        $result = fwrite($fp, $msg, strlen($msg));
-
-        $apple_error_response = fread($fp, 6);
-
+        foreach ($ids as $id) {
+            $body['aps'] = array(
+                'alert' => $this->push->getDataForApple(),
+                'content-available' => 1
+            );
+            $payload = json_encode($body);
+            $msg = chr(0);
+            $msg .= pack('n', 32);
+            $msg .= pack('H*', $id);
+            $msg .= pack('n', strlen($payload));
+            $msg .= $payload;
+            fwrite($fp, $msg, strlen($msg));
+        }
         fclose($fp);
-
-        return $result;
     }
 
     private function updateIds($ids, $response)
@@ -126,5 +101,15 @@ class ApplePush
         $apkDB->close();
 
         return $result;
+    }
+
+    /**
+     * Fake result for appleXPush
+     * Legacy code support
+     * @return string
+     */
+    public function getResult()
+    {
+        return 'OK';
     }
 }

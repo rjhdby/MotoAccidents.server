@@ -23,19 +23,20 @@ class Push
     public function getDataForAndroid()
     {
         return array(
-            'id'  => $this->data['id'],
+            'id' => $this->data['id'],
             'lat' => $this->data['lat'],
             'lon' => $this->data['lon'],
-            't'   => $this->data['t'],
-            'a'   => $this->data['a'],
-            'm'   => $this->data['m'],
-            'c'   => time()
+            't' => $this->data['t'],
+            'a' => $this->data['a'],
+            'm' => $this->data['m'],
+            'c' => time()
         );
     }
 
-    public function getDataForApple(){
+    public function getDataForApple()
+    {
         return array(
-            'id'=>$this->data['id']
+            'id' => $this->data['id']
         );
     }
 }

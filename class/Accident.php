@@ -13,6 +13,7 @@ class Accident
     private $lon;
     private $type;
     private $medicine;
+    private $test;
 
     /** @var Message[] $messages */
     private $messages = array();
@@ -38,6 +39,7 @@ class Accident
         $this->lon         = $data['lon'];
         $this->type        = Cast::accType($data['type']);
         $this->medicine    = Cast::medicineType($data['med']);
+        $this->test        = $data['test'] == 1 ? true : false;
         $this->requestHistory();
         $this->requestMessages();
         $this->requestVolunteers();
@@ -61,6 +63,10 @@ class Accident
      */
     public function get()
     {
+        if ($this->test) {
+            $this->description = 'TEST!!! ' . $this->description;
+            $this->address     = 'TEST!!! ' . $this->address;
+        }
         $out = array(
             'id'   => $this->id,
             'time' => $this->timestamp,
