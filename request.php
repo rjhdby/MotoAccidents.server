@@ -18,6 +18,9 @@ switch ($_GET['m']) {
     case 'list':
         $method = new GetList($_GET);
         break;
+    case 'simplelist':
+        $method = new GetSimpleList($_GET);
+        break;
     case 'acc':
         $method = new CreateAccident($_GET);
         break;
