@@ -6,8 +6,6 @@ class RegisterGCM
     private $id;
     private $key;
     private $imei;
-    /** @var  mysqli $apkDB */
-    private $apkDB;
 
     /**
      * @param $data
@@ -27,16 +25,14 @@ class RegisterGCM
         $this->id    = $data['id'];
         $this->key   = $data['k'];
         $this->imei  = isset($data['i']) ? $data['i'] : '';
-        $this->apkDB = new ApkDB();
         $this->register();
-        $this->apkDB->close();
     }
 
     private function register()
     {
 
         $query = 'SELECT COUNT(*) FROM devices WHERE id_user=? AND imei=?';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('is', $this->id, $this->imei);
         $stmt->execute();
         if ($stmt->num_rows == 0) {
@@ -49,7 +45,7 @@ class RegisterGCM
     private function newDevice()
     {
         $query = 'INSERT INTO devices (id_user,imei,gcm) VALUES (?,?,?)';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('iss', $this->id, $this->imei, $this->key);
         $stmt->execute();
         if ($stmt->error) {
@@ -62,7 +58,7 @@ class RegisterGCM
     private function updateDevice()
     {
         $query = 'UPDATE devices SET gcm=? WHERE id_user=? AND imei=?';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('sis', $this->key, $this->id, $this->imei);
         $stmt->execute();
         if ($stmt->error) {

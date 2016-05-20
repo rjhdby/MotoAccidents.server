@@ -9,7 +9,6 @@ class ChangeVolunteerStatus
     private $status;
 
     private $user;
-    private $apkDB;
 
     /**
      * ChangeVolunteerStatus constructor.
@@ -42,16 +41,14 @@ class ChangeVolunteerStatus
 
             return;
         }
-        $this->apkDB = new ApkDB();
         $this->changeStatus();
         $this->updateModified();
-        $this->apkDB->close();
     }
 
     private function changeStatus()
     {
         $query = 'SELECT status FROM onway WHERE id=? AND id_user=?';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('ii', $this->id, $this->uid);
         $stmt->execute();
         if ($stmt->num_rows == 0) {
@@ -64,7 +61,7 @@ class ChangeVolunteerStatus
     private function newVolunteer()
     {
         $query = 'INSERT INTO onway (id,id_user,status) VALUES (?,?,?)';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('iis', $this->id, $this->uid, $this->status);
         $stmt->execute();
         if ($stmt->error) {
@@ -77,7 +74,7 @@ class ChangeVolunteerStatus
     private function updateStatus()
     {
         $query = 'UPDATE onway SET status=?, timest=NOW() WHERE id=? AND id_user=?';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('sii', $this->status, $this->id, $this->uid);
         $stmt->execute();
         if ($stmt->error) {
@@ -90,10 +87,8 @@ class ChangeVolunteerStatus
     private function updateModified()
     {
         $query = 'UPDATE entities SET modified=NOW() WHERE id=?';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
     }
-
-
 }

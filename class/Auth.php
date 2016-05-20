@@ -52,13 +52,11 @@ class Auth
 
     private function getUser()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT id, role FROM users WHERE login=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('s', $this->login);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
 
         return $result;
     }
@@ -92,24 +90,20 @@ class Auth
 
     private function updateUser()
     {
-        $apkDB = new ApkDB();
         $query = 'UPDATE users SET lastlogin=NOW() WHERE login=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('s', $this->login);
         $stmt->execute();
-        $apkDB->close();
     }
 
     private function createUser()
     {
-        $apkDB = new ApkDB();
         $query = 'INSERT INTO users (login,register,imei) VALUES (?,NOW(),?)';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('ss', $this->login, $this->imei);
         $stmt->execute();
         $this->id   = $stmt->insert_id;
         $this->role = Cast::STANDARD_ROLE;
-        $apkDB->close();
     }
 
     /**

@@ -33,7 +33,6 @@ class GetList
 
     private function requestList()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 					a.id,
 					UNIX_TIMESTAMP(a.created) AS uxtime,
@@ -60,11 +59,10 @@ class GetList
 					AND is_test IN (0,?)
 					';
 
-        $stmt = $apkDB->prepare($query);
+        $stmt = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('ii', $this->age, $this->test);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
         while ($row = $result->fetch_assoc()) {
             $accident = new Accident($row);
             $this->accidents[] = $accident->get();

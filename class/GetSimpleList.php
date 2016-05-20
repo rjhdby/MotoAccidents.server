@@ -28,7 +28,6 @@ class GetSimpleList
 
     private function requestList()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 					a.id,
 					UNIX_TIMESTAMP(a.created) AS uxtime,
@@ -55,11 +54,10 @@ class GetSimpleList
 					AND is_test = 0
 					';
 
-        $stmt = $apkDB->prepare($query);
+        $stmt = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('ii', $this->begin, $this->end);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
         while ($row = $result->fetch_assoc()) {
             $accident = new SimpleAccident($row);
             $this->accidents[] = $accident->get();

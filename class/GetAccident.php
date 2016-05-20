@@ -27,7 +27,6 @@ class GetAccident
 
     private function getAccident()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 					a.id,
 					UNIX_TIMESTAMP(a.created) AS uxtime,
@@ -48,7 +47,7 @@ class GetAccident
 					a.id=?
 				LIMIT 1
 					';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         $row      = $stmt->get_result()->fetch_assoc();

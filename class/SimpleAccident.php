@@ -38,7 +38,7 @@ class SimpleAccident
     /*
      * id - accident id
      * time - unix timestamp
-     * a - addrtess
+     * a - address
      * d - description
      * s - status
      * o - owner

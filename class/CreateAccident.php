@@ -3,7 +3,6 @@
 class CreateAccident
     extends Core
 {
-    //private $accident;
     private $user;
     private $id;
     private $forumId;
@@ -61,9 +60,8 @@ class CreateAccident
     private function checkFrequency()
     {
         $threshold = $this->user->isModerator() ? 60 : 600;
-        $apkDB     = new ApkDB();
         $query     = 'SELECT IFNULL(UNIX_TIMESTAMP(MAX(created)), 0) FROM entities WHERE owner=?';
-        $stmt      = $apkDB->prepare($query);
+        $stmt      = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->user->getId());
         $stmt->execute();
         $timeout = time() - implode('', $stmt->get_result()->fetch_row());
@@ -71,12 +69,10 @@ class CreateAccident
             $this->error        = self::CREATE_TIMEOUT;
             $this->errorDetails = (int)$threshold - (int)$timeout;
         }
-        $apkDB->close();
     }
 
     private function addAccident($data)
     {
-        $apkDB = new ApkDB();
         $query = '
                 INSERT INTO entities
 				(
@@ -96,16 +92,16 @@ class CreateAccident
 					medicine
 				) VALUES (NOW(),NOW(),NOW(),?,"mc_accident",?,?,?,?,"acc_status_act","",?,?,?)
 				';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('iddssiss',
-            $this->user->getId(),
-            $data['lat'],
-            $data['lon'],
-            $data['a'],
-            $data['d'],
-            $this->test,
-            Cast::oldAccType($data['t']),
-            Cast::oldMedicineType($data['c'])
+                          $this->user->getId(),
+                          $data['lat'],
+                          $data['lon'],
+                          $data['a'],
+                          $data['d'],
+                          $this->test,
+                          Cast::oldAccType($data['t']),
+                          Cast::oldMedicineType($data['c'])
         );
         $stmt->execute();
         if ($stmt->error) {
@@ -113,12 +109,10 @@ class CreateAccident
         } else {
             $this->id = $stmt->insert_id;
         }
-        $apkDB->close();
     }
 
     private function updateHistory($data)
     {
-        $apkDB   = new ApkDB();
         $details = json_encode(array('lon' => $data['lon'], 'lat' => $data['lat'], 'address' => $data['a']));
         $query   = '
                 INSERT INTO history
@@ -129,19 +123,16 @@ class CreateAccident
 					params
 				) VALUES (?,?,"create_mc_acc",?)
 				';
-        $stmt    = $apkDB->prepare($query);
+        $stmt    = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('iis', $this->id, $this->user->getId(), $details);
         $stmt->execute();
-        $apkDB->close();
     }
 
     private function updateForumPost($id)
     {
-        $apkDB = new ApkDB();
         $query = 'UPDATE entities SET forum_id=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $id);
         $stmt->execute();
-        $apkDB->close();
     }
 }

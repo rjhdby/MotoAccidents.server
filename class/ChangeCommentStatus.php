@@ -45,9 +45,8 @@ class ChangeCommentStatus
 
     private function changeStatus()
     {
-        $apkDB = new ApkDB();
         $query = 'UPDATE messages SET status=?, modified=NOW() WHERE id_ent=? AND id=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('sii', $this->status, $this->id, $this->id);
         $stmt->execute();
         if ($stmt->error) {
@@ -55,7 +54,6 @@ class ChangeCommentStatus
         } else {
             $this->setResult(array('s' => self::OK));
         }
-        $apkDB->close();
     }
 
     private function changeForumComment()

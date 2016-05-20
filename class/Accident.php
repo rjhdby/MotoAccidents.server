@@ -48,7 +48,7 @@ class Accident
     /*
      * id - accident id
      * time - unix timestamp
-     * a - addrtess
+     * a - address
      * d - description
      * s - status
      * o - owner
@@ -68,20 +68,20 @@ class Accident
             $this->address     = 'TEST!!! ' . $this->address;
         }
         $out = array(
-            'id'   => $this->id,
+            'id' => $this->id,
             'time' => $this->timestamp,
-            'a'    => $this->address,
-            'd'    => $this->description,
-            's'    => $this->status,
-            'o'    => $this->owner,
-            'oid'  => $this->ownerId,
-            'lat'  => $this->lat,
-            'lon'  => $this->lon,
-            't'    => $this->type,
-            'med'  => $this->medicine,
-            'm'    => array(),
-            'v'    => array(),
-            'h'    => array()
+            'a' => $this->address,
+            'd' => $this->description,
+            's' => $this->status,
+            'o' => $this->owner,
+            'oid' => $this->ownerId,
+            'lat' => $this->lat,
+            'lon' => $this->lon,
+            't' => $this->type,
+            'med' => $this->medicine,
+            'm' => array(),
+            'v' => array(),
+            'h' => array()
         );
         foreach ($this->messages as $message) {
             $out['m'][] = $message->get();
@@ -98,7 +98,6 @@ class Accident
 
     private function requestMessages()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 				a.id,
 				a.id_user,
@@ -109,11 +108,10 @@ class Accident
 				WHERE 1=1
 				    AND a.id_user=b.id
 					AND a.id_ent = ?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
         while ($row = $result->fetch_assoc()) {
             $this->messages[] = new Message($row);
         }
@@ -121,7 +119,6 @@ class Accident
 
     private function requestVolunteers()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 					a.id_user,
 					b.login,
@@ -133,11 +130,10 @@ class Accident
 				WHERE 1=1
 					AND a.id = ?
 					AND a.id_user = b.id';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
         while ($row = $result->fetch_assoc()) {
             $this->volunteers[] = new Volunteer($row);
         }
@@ -145,7 +141,6 @@ class Accident
 
     private function requestHistory()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT
 				MAX(a.id) AS id,
 				a.id_user,
@@ -156,11 +151,10 @@ class Accident
 				WHERE 1=1
 				    AND a.id_user=b.id
 					AND a.id_ent = ?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $apkDB->close();
         while ($row = $result->fetch_assoc()) {
             $this->history[] = new History($row);
         }

@@ -55,19 +55,17 @@ class AndroidPush
 
     private function updateIds($ids, $response)
     {
-        $apkDB = new ApkDB();
         for ($i = 0; $i < count($ids); $i++) {
             if (isset($response[ $i ]['error'])) {
                 if ($response[ $i ]['error'] == 'NotRegistered') {
                     $query = 'DELETE FROM devices WHERE gcm=?';
-                    $stmt  = $apkDB->prepare($query);
+                    $stmt  = ApkDB::getInstance()->prepare($query);
                     $stmt->bind_param('s', $ids[ $i ]);
                     $stmt->execute();
                     //echo $ids[ $i ] . "   " . $response[ $i ]['error'] . "<br>";
                 }
             }
         }
-        $apkDB->close();
     }
 
     private function getIds()
@@ -87,17 +85,14 @@ class AndroidPush
 
     private function getAllIds()
     {
-        $apkDB  = new ApkDB();
         $query  = 'SELECT DISTINCT gcm FROM devices WHERE NOT gcm IS NULL';
-        $result = $apkDB->query($query);
-        $apkDB->close();
+        $result = ApkDB::getInstance()->query($query);
 
         return $result;
     }
 
     private function getDevelopersIds()
     {
-        $apkDB  = new ApkDB();
         $query  = '
                 SELECT DISTINCT a.gcm
                 FROM devices a, users b
@@ -106,8 +101,7 @@ class AndroidPush
                   AND b.role IN ("developer")
                   AND NOT a.gcm IS NULL
                   ';
-        $result = $apkDB->query($query);
-        $apkDB->close();
+        $result = ApkDB::getInstance()->query($query);
 
         return $result;
     }

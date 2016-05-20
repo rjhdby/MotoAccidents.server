@@ -41,9 +41,8 @@ class ChangeUserRole
 
     private function changeStatus()
     {
-        $apkDB = new ApkDB();
         $query = 'UPDATE users SET role=? WHERE id=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('si', $this->role, $this->uid);
         $stmt->execute();
         if ($stmt->error) {
@@ -51,7 +50,6 @@ class ChangeUserRole
         } else {
             $this->setResult(array('s' => self::OK));
         }
-        $apkDB->close();
     }
 
     private function castStatus($status)

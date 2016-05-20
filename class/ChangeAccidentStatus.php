@@ -47,22 +47,19 @@ class ChangeAccidentStatus
 
     private function isOwner()
     {
-        $apkDB = new ApkDB();
         $query = 'SELECT owner FROM entities WHERE id=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         $result = implode($stmt->get_result()->fetch_row());
-        $apkDB->close();
 
         return $result == $this->user->getId();
     }
 
     private function updateStatus()
     {
-        $apkDB = new ApkDB();
         $query = 'UPDATE entities SET status=? WHERE id=?';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('i', $this->id);
         $stmt->execute();
         if ($stmt->error) {
@@ -70,12 +67,10 @@ class ChangeAccidentStatus
         } else {
             $this->setResult(array('s' => self::OK));
         }
-        $apkDB->close();
     }
 
     private function updateHistory()
     {
-        $apkDB = new ApkDB();
         $query = '
                 INSERT INTO history
 				(
@@ -85,9 +80,8 @@ class ChangeAccidentStatus
 					params
 				) VALUES (?,?,?,"")
 				';
-        $stmt  = $apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('iis', $this->id, $this->user->getId(), $this->status);
         $stmt->execute();
-        $apkDB->close();
     }
 }

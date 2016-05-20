@@ -47,60 +47,14 @@ class ApplePush
         fclose($fp);
     }
 
-    private function updateIds($ids, $response)
-    {
-        $apkDB = new ApkDB();
-        for ($i = 0; $i < count($ids); $i++) {
-            if (isset($response[$i]['error'])) {
-                if ($response[$i]['error'] == 'NotRegistered') {
-                    $query = 'DELETE FROM devices WHERE gcm=?';
-                    $stmt = $apkDB->prepare($query);
-                    $stmt->bind_param('s', $ids[$i]);
-                    $stmt->execute();
-                    //echo $ids[ $i ] . "   " . $response[ $i ]['error'] . "<br>";
-                }
-            }
-        }
-        $apkDB->close();
-    }
-
     private function getIds()
     {
         $out = array();
-        $apkDB = new ApkDB();
-        $result = $apkDB->query('SELECT `key` FROM devices_ios');
+        $result = ApkDB::getInstance()->query('SELECT `key` FROM devices_ios');
         while ($row = $result->fetch_array()) {
             $out[] = $row[0];
         }
-        $apkDB->close();
         return $out;
-    }
-
-    private function getAllIds()
-    {
-        $apkDB = new ApkDB();
-        $query = 'SELECT DISTINCT gcm FROM devices WHERE NOT gcm IS NULL';
-        $result = $apkDB->query($query);
-        $apkDB->close();
-
-        return $result;
-    }
-
-    private function getDevelopersIds()
-    {
-        $apkDB = new ApkDB();
-        $query = '
-                SELECT DISTINCT a.gcm
-                FROM devices a, users b
-                WHERE 1=1
-                  AND a.id_user=b.id
-                  AND b.role IN ("developer")
-                  AND NOT a.gcm IS NULL
-                  ';
-        $result = $apkDB->query($query);
-        $apkDB->close();
-
-        return $result;
     }
 
     /**

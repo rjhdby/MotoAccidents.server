@@ -5,8 +5,6 @@ class RegisterAPNS
 {
     private $id;
     private $key;
-    /** @var  mysqli $apkDB */
-    private $apkDB;
 
     /**
      * @param $data
@@ -25,16 +23,14 @@ class RegisterAPNS
         if ($this->error) return;
         $this->id    = $data['id'];
         $this->key   = $data['k'];
-        $this->apkDB = new ApkDB();
         $this->register();
-        $this->apkDB->close();
     }
 
     private function register()
     {
         $query = 'INSERT INTO devices_ios (id_user,`key`) VALUES (?,?)
                   ON DUPLICATE KEY UPDATE registered=CURRENT_TIMESTAMP';
-        $stmt  = $this->apkDB->prepare($query);
+        $stmt  = ApkDB::getInstance()->prepare($query);
         $stmt->bind_param('is', $this->id, $this->key);
         $stmt->execute();
         if ($stmt->error) {
